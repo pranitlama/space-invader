@@ -17,8 +17,9 @@ public class Spaceship extends JPanel  {
 
     public  void draw(Graphics g)
     {
-        System.out.println("inside spaceship");
+//        System.out.println("inside spaceship");
         Graphics2D g2d=(Graphics2D)g;
+
         image=new ImageIcon(getClass().getResource("empire-ship.png")).getImage();
 //        System.out.println(image);
 

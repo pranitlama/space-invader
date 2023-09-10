@@ -13,12 +13,26 @@ public class Space extends JPanel implements ActionListener, KeyListener {
     private boolean movingright=false;
     Spaceship spaceship;
 
+    Shipbullet shipbullet;
+    boolean moved=false;
+
+    int bulletx=160;
+    int bullety=590;
+
+
+    //smooth ko lagi
+    private Timer timer;
+
 
     Space(){
         spaceship=new Spaceship();
 
         this.setPreferredSize(new Dimension(width,height));
         this.setBackground(Color.black);
+
+        timer =new Timer(1,this);
+
+        timer.start();
 
 
 
@@ -28,31 +42,43 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(g);
 
         Graphics2D g2d=(Graphics2D) g;
-        System.out.println("inside space");
+
 
         spaceship.draw(g2d);
+
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e);
         if(movingright)
         {
-            System.out.println("moving right");
+
             if(spaceship.xpos<=330) {
                 spaceship.move(3);
+                bulletx=bulletx+3;
+               moved=true;
 
 
             }
         } else if (movingleft) {
-            System.out.println("moving left");
+
             if(spaceship.xpos>=-3) {
                 spaceship.move(-3);
+                bulletx=bulletx-3;
 
+moved=true;
 
             }
         }
+
+        if(moved)
+
+        {
+            repaint();
+            moved=true;
+        }
+
 
     }
 
@@ -69,35 +95,42 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 
         if(e.getKeyCode()==37)
         {
-    spaceship.move(-3);
-    repaint();
+
+
             movingleft=true;
+
 
 
 
         } else if (e.getKeyCode()==39) {
 
-            spaceship.move(3);
-            repaint();
+
+
             movingright = true;
 
 
+
+        } else if ((e.getKeyCode()==KeyEvent.VK_SPACE)) {
+                shipbullet=new Shipbullet(100,bullety);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+
         if(e.getKeyCode()==37)
         {
+
+
             movingleft=false;
-            repaint();
+
 
 
 
         } else if (e.getKeyCode()==39) {
 
             movingright=false;
-repaint();
+
 
         }
     }
