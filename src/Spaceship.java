@@ -1,43 +1,53 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class Spaceship extends JPanel  {
+public class Spaceship {
+    private int x;
+    private int y;
+    private int dx; // Horizontal velocity
 
-    public  int xpos=160;
-    public  int ypos=590;
+    private final int width = 40;
+    private final int height = 20;
 
-
-
-
-    Image image;
-
-    public  void draw(Graphics g)
-    {
-//        System.out.println("inside spaceship");
-        Graphics2D g2d=(Graphics2D)g;
-
-        image=new ImageIcon(getClass().getResource("empire-ship.png")).getImage();
-//        System.out.println(image);
-
-
-
-                g2d.drawImage(image, xpos, ypos, null);
-
-
-
-
-
-
+    public Spaceship() {
+        x = 380; // Initial player position
+        y = 500; // Initial player position
     }
 
-    public  void move(int speed){
-        System.out.println(xpos);
-        xpos=xpos+speed;
+    public void draw(Graphics g) {
+        g.setColor(Color.BLUE);
+        g.fillRect(x, y, width, height);
     }
 
+    public void move() {
+        x += dx;
 
+        // Ensure the player stays within the screen bounds
+        if (x < 0) {
+            x = 0;
+        } else if (x > 760) {
+            x = 760;
+        }
+    }
+
+    // Getter methods for player position and dimensions
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    // Setter method for horizontal velocity
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
 }

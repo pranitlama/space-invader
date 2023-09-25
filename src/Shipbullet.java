@@ -1,42 +1,51 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class Shipbullet extends JPanel implements ActionListener {
-    private int bulletX;
-    private int bulletY;
-    private Timer timer;
+public class Shipbullet {
+    private int x;
+    private int y;
+    private int dy; // Vertical velocity
+
+    private final int width = 5;
+    private final int height = 10;
 
     public Shipbullet(int x, int y) {
-        bulletX = x;
-        bulletY = y;
-        timer = new Timer(10, this);
-        timer.start();
+        this.x = x;
+        this.y = y;
+        dy = -3; // Bullet moves upward with a negative vertical velocity
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-
-        super.paintComponent(g);
-        drawBullet(g);
+    public void draw(Graphics g) {
+        g.setColor(Color.YELLOW);
+        g.fillRect(x, y, width, height);
     }
 
-    private void drawBullet(Graphics g) {
+    public void move() {
+        y += dy;
 
-        g.setColor(Color.RED);
-        g.fillRect(bulletX, bulletY, 5, 10); // Adjust the size and color as needed
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("hello");
-        bulletY -= 5; // Adjust the bullet speed as needed
-
-        if (bulletY < 0) {
-            timer.stop();
+        // Remove the bullet if it goes off-screen
+        if (y < 0) {
+            // You can remove bullets here or implement bullet recycling
         }
+    }
 
-        repaint();
+    // Getter methods for bullet position and dimensions
+    public int getX() {
+        return x;
+    }
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
+    }
+
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }
