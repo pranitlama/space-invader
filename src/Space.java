@@ -1,5 +1,6 @@
 
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,10 +30,15 @@ public class Space extends JPanel implements ActionListener, KeyListener {
     FileWriter fileWriter;
     int highscore;
 
+    File shootFile = new File("enemyShoot.wav");
+    File gameSoundFile = new File("gameSound.wav");
+    File gameOverFile = new File("gameOver.wav");
+    File collisionFile = new File("collision.wav");
 
 
 
     public Space() throws IOException {
+        playSound(gameSoundFile);
         spaceship = new Spaceship();
         enemies = new ArrayList<>();
         bullets = new ArrayList<>();
@@ -126,9 +132,11 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 
                     if(lives.lives>0){
                         lives.lives--;
+                        playSound(collisionFile);
                     }
                     if(lives.lives==0) {
                         gameOver=true; //gameover garcha
+                        playSound(gameOverFile);
                         setHighscore(); //highscore set garcha
                     }
 
@@ -219,6 +227,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
                     bulletIterator.remove();
                     enemyIterator.remove();
                     score.score = score.score + 10;
+                    playSound(shootFile);
                 }
             }
         }
@@ -253,6 +262,42 @@ public class Space extends JPanel implements ActionListener, KeyListener {
             spaceship.setDx(0);
         }
     }
+
+    private void playSound(File soundFileName){
+        File file = new File(soundFileName.toURI());
+        Clip clip = null;
+            try {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+                clip = AudioSystem.getClip();
+                clip.open(audioStream);
+            } catch (UnsupportedAudioFileException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (LineUnavailableException e) {
+                throw new RuntimeException(e);
+            }
+            clip.start();
+    }
+
+//    private void stopSound(File soundFileName){
+//        File file = new File(soundFileName.toURI());
+//        Clip clip = null;
+//        try{
+//            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+//            clip = AudioSystem.getClip();
+////            clip.open(audioStream);
+//        }catch(UnsupportedAudioFileException e){
+//            throw new RuntimeException(e);
+//        }catch(IOException e){
+//            throw new RuntimeException(e);
+//        }catch(LineUnavailableException e){
+//            throw new RuntimeException(e);
+//        }
+//        if(gameOver) {
+//            clip.stop();
+//        }
+//    }
 
 //    public static void main(String[] args) throws IOException {
 //        JFrame frame = new JFrame("Space Invaders");

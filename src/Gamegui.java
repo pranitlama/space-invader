@@ -14,13 +14,14 @@ Space space;
 
         JFrame frame = new JFrame("Space Invaders");
         Space game = new Space();
-        frame.add(game);
+            frame.add(game);
 
-        frame.setSize(600, 700);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+            frame.setSize(600, 700);
+            frame.setResizable(false);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+
 //        frame=new JFrame("Space Invader");
 //        space=new Space();
 //
