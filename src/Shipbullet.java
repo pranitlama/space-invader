@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class Shipbullet {
@@ -8,6 +9,8 @@ public class Shipbullet {
     private final int width = 5;
     private final int height = 10;
 
+    Image image;
+
     public Shipbullet(int x, int y) {
         this.x = x;
         this.y = y;
@@ -15,8 +18,12 @@ public class Shipbullet {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.YELLOW);
-        g.fillRect(x, y, width, height);
+//        g.setColor(Color.YELLOW);
+//        g.fillRect(x, y, width, height);
+
+        Graphics2D g2d=(Graphics2D)g;
+        image=new ImageIcon(getClass().getResource("bullet.png")).getImage();
+        g2d.drawImage(image, x, y, null);
     }
 
     public void move() {

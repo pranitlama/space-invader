@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class Enemy {
@@ -8,6 +9,8 @@ public class Enemy {
     private final int width = 20;
     private final int height = 20;
 
+    Image image;
+
     public Enemy(int x, int y) {
         this.x = x;
         this.y = y;
@@ -15,8 +18,12 @@ public class Enemy {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y, width, height);
+//        g.setColor(Color.RED);
+//        g.fillRect(x, y, width, height);
+
+        Graphics2D g2d=(Graphics2D)g;
+        image=new ImageIcon(getClass().getResource("enemy.png")).getImage();
+        g2d.drawImage(image, x, y, null);
     }
 
     public void move() {
