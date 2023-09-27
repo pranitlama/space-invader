@@ -1,0 +1,20 @@
+import java.awt.*;
+
+public class Score extends Rectangle{
+    static int width;
+    static int height;
+    int score;
+
+    Score(int width, int height){
+        Score.width=width;
+        Score.height=height;
+    }
+
+    public void draw(Graphics g){
+        g.setColor(Color.white);
+        g.setFont(new Font("Consolas", Font.PLAIN, 40));
+
+        g.drawString(String.valueOf("Score: "+score),(width/2)-100, 50);
+    }
+
+}

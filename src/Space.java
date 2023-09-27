@@ -20,6 +20,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
     private List<Shipbullet> bullets;
     private boolean gameOver = false;
     private Image backgroundImage;
+    Score score;
 
 
     public Space() {
@@ -32,17 +33,21 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         timer = new Timer(15, this);
         timer.start();
         spawnEnemies();
+
+        score = new Score(600, 700);
     }
     public void draw(Graphics g){
         Graphics2D g2d=(Graphics2D)g;
         backgroundImage=new ImageIcon(getClass().getResource("background.jpg")).getImage();
         g2d.drawImage(backgroundImage, 0, 0, 600, 700, null);
+
+        score.draw(g);
     }
 
     public void spawnEnemies() {
         Random rand = new Random();
         for (int i = 0; i < 10; i++) {
-            int x = rand.nextInt(600);
+            int x = rand.nextInt(540);
             int y = rand.nextInt(100);
             Enemy newEnemy = new Enemy(x, y);
 
@@ -94,6 +99,9 @@ public class Space extends JPanel implements ActionListener, KeyListener {
                 // Check if the enemy has crossed the bottom of the window
                 if (enemy.getY() > getHeight()) {
                     enemyIterator.remove();
+                    if(score.score>0) {
+                        score.score = score.score - 5;
+                    }
                 }
             }
 //            for (Enemy enemy : enemies) {
@@ -120,7 +128,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         // Check if there are fewer than a certain number of enemies on the screen
         if (enemies.size() < 8) { // Adjust the number as needed
             Random rand = new Random();
-            int x = rand.nextInt(600);
+            int x = rand.nextInt(540);
             int y = rand.nextInt(100);
             enemies.add(new Enemy(x, y));
         }
@@ -140,6 +148,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
                 if (bulletBounds.intersects(enemyBounds)) {
                     bulletIterator.remove();
                     enemyIterator.remove();
+                    score.score = score.score + 10;
                 }
             }
         }

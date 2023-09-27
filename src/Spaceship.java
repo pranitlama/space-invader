@@ -12,7 +12,8 @@ public class Spaceship {
     Image image;
 
     public Spaceship() {
-        x = 380; // Initial player position
+//        x = 380; // Initial player position
+        x = 300; // Initial player position
 //        y = 500; // Initial player position
         y = 600; // Initial player position
     }
@@ -32,8 +33,10 @@ public class Spaceship {
         // Ensure the player stays within the screen bounds
         if (x < 0) {
             x = 0;
-        } else if (x > 760) {
-            x = 760;
+//        } else if (x > 760) {
+        } else if (x > 525) {
+//            x = 760;
+            x = 525;
         }
     }
 
