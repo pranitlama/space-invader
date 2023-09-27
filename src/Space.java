@@ -99,7 +99,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
             // Game over message
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.BOLD, 36));
-            g.drawString("Game Over", 250, 300);
+            g.drawString("Game Over", 200, 300);
         }
     }
 
@@ -123,6 +123,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 //                    System.out.println("game over");
 
 
+
                     if(lives.lives>0){
                         lives.lives--;
                     }
@@ -130,6 +131,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
                         gameOver=true; //gameover garcha
                         setHighscore(); //highscore set garcha
                     }
+
 
                 }
 
@@ -252,15 +254,15 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        JFrame frame = new JFrame("Space Invaders");
-        Space game = new Space();
-        frame.add(game);
-
-        frame.setSize(600, 700);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) throws IOException {
+//        JFrame frame = new JFrame("Space Invaders");
+//        Space game = new Space();
+//        frame.add(game);
+//
+//        frame.setSize(600, 700);
+//        frame.setResizable(false);
+//        frame.setLocationRelativeTo(null);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setVisible(true);
+//    }
 }
