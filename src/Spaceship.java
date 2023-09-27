@@ -4,7 +4,7 @@ import java.awt.*;
 public class Spaceship {
     private int x;
     private int y;
-    private int dx; // Horizontal velocity
+    private int dx;
 
     private final int width = 40;
     private final int height = 20;
@@ -55,6 +55,10 @@ public class Spaceship {
 
     public int getHeight() {
         return height;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
     }
 
     // Setter method for horizontal velocity

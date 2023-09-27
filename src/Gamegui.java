@@ -2,6 +2,7 @@ import javax.swing.*;
 import  java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class Gamegui  {
 
@@ -10,7 +11,7 @@ JFrame frame;
 Space space;
 
 
-    public Gamegui() {
+    public Gamegui() throws IOException {
 
         frame=new JFrame("Space Invader");
         space=new Space();

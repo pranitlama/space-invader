@@ -10,6 +10,11 @@ public class Score extends Rectangle{
         Score.height=height;
     }
 
+    public  int getscore()
+    {
+        return score;
+    }
+
     public void draw(Graphics g){
         g.setColor(Color.white);
         g.setFont(new Font("Consolas", Font.PLAIN, 40));

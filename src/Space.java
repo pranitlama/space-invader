@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,11 +20,18 @@ public class Space extends JPanel implements ActionListener, KeyListener {
     private List<Enemy> enemies;
     private List<Shipbullet> bullets;
     private boolean gameOver = false;
+    private boolean lifelost = false;
     private Image backgroundImage;
     Score score;
 
+    File scoreFile;
+    FileWriter fileWriter;
+    int highscore;
 
-    public Space() {
+
+
+
+    public Space() throws IOException {
         spaceship = new Spaceship();
         enemies = new ArrayList<>();
         bullets = new ArrayList<>();
@@ -33,6 +41,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         timer = new Timer(15, this);
         timer.start();
         spawnEnemies();
+        getHighScore();
 
         score = new Score(600, 700);
     }
@@ -70,8 +79,13 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(g);
 
         if (!gameOver) {
-            draw(g);
-            spaceship.draw(g);
+           draw(g);
+           if(!lifelost)
+           {
+               spaceship.draw(g);
+
+           }
+
             for (Enemy enemy : enemies) {
                 enemy.draw(g);
             }
@@ -88,6 +102,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        long currentTime = System.currentTimeMillis();
         if (!gameOver) {
             spaceship.move();
 
@@ -95,6 +110,17 @@ public class Space extends JPanel implements ActionListener, KeyListener {
             while (enemyIterator.hasNext()) {
                 Enemy enemy = enemyIterator.next();
                 enemy.move();
+
+
+                if (spaceship.getBounds().intersects(enemy.getBounds())) {
+
+                    lifelost=true;
+//                    System.out.println("game over");
+//                    gameOver=true; //gameover garcha
+//
+//                        setHighscore(); //highscore set garcha
+
+                }
 
                 // Check if the enemy has crossed the bottom of the window
                 if (enemy.getY() > getHeight()) {
@@ -104,23 +130,59 @@ public class Space extends JPanel implements ActionListener, KeyListener {
                     }
                 }
             }
-//            for (Enemy enemy : enemies) {
-//                enemy.move();
-//
-//            }
-            for (Shipbullet bullet : bullets) {
+
+
+            Iterator<Shipbullet> bulletIterator = bullets.iterator();
+            while (bulletIterator.hasNext()) {
+                Shipbullet bullet = bulletIterator.next();
                 bullet.move();
+
+                // Check if the bullet has gone off the top or bottom of the window
+                if (bullet.getY() < 0 || bullet.getY() > getHeight()) {
+                    bulletIterator.remove();
+                }
             }
             checkCollisions();
             spawnEnemiesIfNeeded();
 
 
 
-            // Check and spawn new enemies as needed
+
 
 
 
             repaint();
+        }
+    }
+
+    public void getHighScore() throws IOException {
+        scoreFile = new File("score.txt");
+        BufferedReader reader =new BufferedReader(new FileReader(scoreFile));
+        String Int_line;
+        Int_line = reader.readLine();
+        int value = Integer.parseInt(Int_line);
+        highscore = value;
+        System.out.println(highscore);
+    }
+
+
+    public  void setHighscore(){
+
+        int scorevalue=score.getscore();
+        System.out.println(scorevalue);
+        if( scorevalue> highscore)
+        {
+            try {
+
+                scoreFile.delete();
+                scoreFile.createNewFile();
+                fileWriter = new FileWriter(scoreFile);
+                fileWriter.write(scorevalue + "");
+                fileWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
@@ -173,7 +235,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         }
         if (key == KeyEvent.VK_SPACE) {
             bullets.add(new Shipbullet(spaceship.getX() + spaceship.getWidth() / 2, spaceship.getY()));
-//            bullets.add(new Shipbullet(5,10));
+
         }
     }
 
@@ -185,11 +247,11 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         JFrame frame = new JFrame("Space Invaders");
         Space game = new Space();
         frame.add(game);
-//        frame.setSize(800, 600);
+
         frame.setSize(600, 700);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);

@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class Menu extends JFrame {
 
@@ -24,7 +25,11 @@ public class Menu extends JFrame {
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Add code to start the game here
-                Gamegui gui=new Gamegui();
+                try {
+                    Gamegui gui=new Gamegui();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 // You can open a new game window or change the current panel to the game screen
 //                JOptionPane.showMessageDialog(null, "Starting the game!");
             }
