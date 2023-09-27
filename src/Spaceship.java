@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class Spaceship {
@@ -8,14 +9,21 @@ public class Spaceship {
     private final int width = 40;
     private final int height = 20;
 
+    Image image;
+
     public Spaceship() {
         x = 380; // Initial player position
-        y = 500; // Initial player position
+//        y = 500; // Initial player position
+        y = 600; // Initial player position
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, width, height);
+//        g.setColor(Color.BLUE);
+//        g.fillRect(x, y, width, height);
+
+        Graphics2D g2d=(Graphics2D)g;
+        image=new ImageIcon(getClass().getResource("hero.png")).getImage();
+        g2d.drawImage(image, x, y, null);
     }
 
     public void move() {

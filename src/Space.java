@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.awt.Graphics;
 
 public class Space extends JPanel implements ActionListener, KeyListener {
 
@@ -18,6 +19,8 @@ public class Space extends JPanel implements ActionListener, KeyListener {
     private List<Enemy> enemies;
     private List<Shipbullet> bullets;
     private boolean gameOver = false;
+    private Image backgroundImage;
+
 
     public Space() {
         spaceship = new Spaceship();
@@ -29,6 +32,11 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         timer = new Timer(15, this);
         timer.start();
         spawnEnemies();
+    }
+    public void draw(Graphics g){
+        Graphics2D g2d=(Graphics2D)g;
+        backgroundImage=new ImageIcon(getClass().getResource("background.jpg")).getImage();
+        g2d.drawImage(backgroundImage, 0, 0, 600, 700, null);
     }
 
     public void spawnEnemies() {
@@ -57,6 +65,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(g);
 
         if (!gameOver) {
+            draw(g);
             spaceship.draw(g);
             for (Enemy enemy : enemies) {
                 enemy.draw(g);
@@ -155,6 +164,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         }
         if (key == KeyEvent.VK_SPACE) {
             bullets.add(new Shipbullet(spaceship.getX() + spaceship.getWidth() / 2, spaceship.getY()));
+//            bullets.add(new Shipbullet(5,10));
         }
     }
 
@@ -170,7 +180,10 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         JFrame frame = new JFrame("Space Invaders");
         Space game = new Space();
         frame.add(game);
-        frame.setSize(800, 600);
+//        frame.setSize(800, 600);
+        frame.setSize(600, 700);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
