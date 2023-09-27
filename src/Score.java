@@ -19,7 +19,7 @@ public class Score extends Rectangle{
         g.setColor(Color.white);
         g.setFont(new Font("Consolas", Font.PLAIN, 40));
 
-        g.drawString(String.valueOf("Score: "+score),(width/2)-100, 50);
+        g.drawString(String.valueOf("Score: "+score),(width/2)-300, 50);
     }
 
 }
