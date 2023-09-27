@@ -23,6 +23,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 
     private Image backgroundImage;
     Score score;
+    Lives lives;
 
     File scoreFile;
     FileWriter fileWriter;
@@ -44,6 +45,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         getHighScore();
 
         score = new Score(600, 700);
+        lives = new Lives(600, 700);
     }
     public void draw(Graphics g){
         Graphics2D g2d=(Graphics2D)g;
@@ -51,6 +53,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         g2d.drawImage(backgroundImage, 0, 0, 600, 700, null);
 
         score.draw(g);
+        lives.draw(g);
     }
 
     public void spawnEnemies() {
@@ -103,6 +106,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+
         if (!gameOver) {
             spaceship.move();
 
@@ -117,9 +121,17 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 //
                     enemyIterator.remove();
 //                    System.out.println("game over");
-                    gameOver=true; //gameover garcha
-//
+
+
+
+                    if(lives.lives>0){
+                        lives.lives--;
+                    }
+                    if(lives.lives==0) {
+                        gameOver=true; //gameover garcha
                         setHighscore(); //highscore set garcha
+                    }
+
 
                 }
 
@@ -145,11 +157,6 @@ public class Space extends JPanel implements ActionListener, KeyListener {
             }
             checkCollisions();
             spawnEnemiesIfNeeded();
-
-
-
-
-
 
 
             repaint();
@@ -220,7 +227,6 @@ public class Space extends JPanel implements ActionListener, KeyListener {
             gameOver = true;
         }
     }
-
 
     @Override
     public void keyTyped(KeyEvent e) {}
