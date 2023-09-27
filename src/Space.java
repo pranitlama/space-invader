@@ -20,7 +20,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
     private List<Enemy> enemies;
     private List<Shipbullet> bullets;
     private boolean gameOver = false;
-    private boolean lifelost = false;
+
     private Image backgroundImage;
     Score score;
 
@@ -80,11 +80,11 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 
         if (!gameOver) {
            draw(g);
-           if(!lifelost)
-           {
+
+
                spaceship.draw(g);
 
-           }
+
 
             for (Enemy enemy : enemies) {
                 enemy.draw(g);
@@ -102,7 +102,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        long currentTime = System.currentTimeMillis();
+
         if (!gameOver) {
             spaceship.move();
 
@@ -114,7 +114,8 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 
                 if (spaceship.getBounds().intersects(enemy.getBounds())) {
 
-                    lifelost=true;
+//
+                    enemyIterator.remove();
 //                    System.out.println("game over");
 //                    gameOver=true; //gameover garcha
 //
