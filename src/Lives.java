@@ -13,8 +13,8 @@ public class Lives extends Rectangle{
     }
     public void draw(Graphics g){
         g.setColor(Color.white);
-        g.setFont(new Font("Consolas", Font.PLAIN, 40));
+        g.setFont(new Font("Consolas", Font.PLAIN, 30));
 
-        g.drawString(String.valueOf("Lives: "+lives),(width/3)+150, 50);
+        g.drawString(String.valueOf("Lives: "+lives),(width/2)-300, 25);
     }
 }
