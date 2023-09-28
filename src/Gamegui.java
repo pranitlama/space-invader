@@ -3,6 +3,7 @@ import  java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Gamegui  {
 
@@ -10,7 +11,7 @@ JFrame frame;
 Space space;
 
 
-    public Gamegui() throws IOException {
+    public Gamegui() throws IOException, SQLException, ClassNotFoundException {
 
         JFrame frame = new JFrame("Space Invaders");
         Space game = new Space();
