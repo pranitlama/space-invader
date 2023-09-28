@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
 
 
 
-    public Space() throws IOException {
+    public Space() throws IOException, SQLException, ClassNotFoundException {
         playSound(gameSoundFile);
         spaceship = new Spaceship();
         enemies = new ArrayList<>();
@@ -48,7 +49,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         timer = new Timer(15, this);
         timer.start();
         spawnEnemies();
-        getHighScore();
+        int highscore = getHighScore();
 
         score = new Score(600, 700);
         lives = new Lives(600, 700);
@@ -137,7 +138,13 @@ public class Space extends JPanel implements ActionListener, KeyListener {
                     if(lives.lives==0) {
                         gameOver=true; //gameover garcha
                         playSound(gameOverFile);
-                        setHighscore(); //highscore set garcha
+                        try {
+                            setHighscore(); //highscore set garcha
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        } catch (ClassNotFoundException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
 
 
@@ -171,35 +178,57 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    public void getHighScore() throws IOException {
-        scoreFile = new File("score.txt");
-        BufferedReader reader =new BufferedReader(new FileReader(scoreFile));
-        String Int_line;
-        Int_line = reader.readLine();
-        int value = Integer.parseInt(Int_line);
-        highscore = value;
-        System.out.println(highscore);
+    public int getHighScore() throws IOException, ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String url ="jdbc:mysql://localhost:3306/space_invader";
+
+        Connection conn = DriverManager.getConnection(url,"root","");
+
+        System.out.println("connection success");
+
+
+//                int enterSet = statement.executeUpdate("INSERT INTO score (highscore) values ('score')");
+
+
+            PreparedStatement st = conn.prepareStatement("(SELECT max(highscore) as highscore from score)");
+
+            ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+            int highscores = rs.getInt("highscore");
+            return highscores;
+        }
+
+//        scoreFile = new File("score.txt");
+//        BufferedReader reader =new BufferedReader(new FileReader(scoreFile));
+//        String Int_line;
+//        Int_line = reader.readLine();
+//        int value = Integer.parseInt(Int_line);
+//        highscore = value;
+//        System.out.println(highscore);
+        return highscore;
     }
 
 
-    public  void setHighscore(){
+    public  void setHighscore() throws SQLException, ClassNotFoundException {
 
         int scorevalue=score.getscore();
-        System.out.println(scorevalue);
-        if( scorevalue> highscore)
-        {
-            try {
-
-                scoreFile.delete();
-                scoreFile.createNewFile();
-                fileWriter = new FileWriter(scoreFile);
-                fileWriter.write(scorevalue + "");
-                fileWriter.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
+        new DB(scorevalue);
+//        System.out.println(scorevalue);
+//        if( scorevalue> highscore)
+//        {
+//            try {
+//
+//                scoreFile.delete();
+//                scoreFile.createNewFile();
+//                fileWriter = new FileWriter(scoreFile);
+//                fileWriter.write(scorevalue + "");
+//                fileWriter.close();
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//        }
     }
 
     public void spawnEnemiesIfNeeded() {
@@ -243,6 +272,7 @@ public class Space extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+
         if (key == KeyEvent.VK_LEFT) {
             spaceship.setDx(-2);
         }
@@ -252,6 +282,9 @@ public class Space extends JPanel implements ActionListener, KeyListener {
         if (key == KeyEvent.VK_SPACE) {
             bullets.add(new Shipbullet(spaceship.getX() + spaceship.getWidth() / 2, spaceship.getY()));
 
+        }
+        if (key == KeyEvent.VK_R) {
+            System.out.println("Hello");
         }
     }
 
